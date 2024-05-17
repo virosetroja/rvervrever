@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>horny's</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: url('https://github.com/assafgold1/login/blob/main/New%20folder/img.jpg?raw=true');
+            background-size: cover; /* Cover the entire background */
+            background-repeat: no-repeat; /* Prevent background image from repeating */
+            background-position: center; /* Center the background image */
+        }
+        .video-container {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            background-color: #fff; /* White background for each video container */
+        }
+        video {
+            display: block;
+            width: 100%;
+            border-bottom: 1px solid #ccc;
+        }
+        .video-info {
+            padding: 10px;
+        }
+        .video-info h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .video-info p {
+            margin: 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>horny's Videos</h1>
+    <div id="videos"></div>
+
+    <script>
+        async function fetchVideos() {
+            const response = await fetch('/videos');
+            const videos = await response.json();
+
+            const videosContainer = document.getElementById('videos');
+            videosContainer.innerHTML = '';
+
+            videos.forEach(video => {
+                const videoContainer = document.createElement('div');
+                videoContainer.classList.add('video-container');
+
+                const videoElement = document.createElement('video');
+                videoElement.src = video.secure_url;
+                videoElement.controls = true;
+
+                const videoInfo = document.createElement('div');
+                videoInfo.classList.add('video-info');
+                const title = document.createElement('h3');
+                title.textContent = video.public_id;
+                const format = document.createElement('p');
+                format.textContent = `Format: ${video.format}`;
+                const size = document.createElement('p');
+                size.textContent = `Size: ${(video.bytes / 1024 / 1024).toFixed(2)} MB`;
+
+                videoInfo.appendChild(title);
+                videoInfo.appendChild(format);
+                videoInfo.appendChild(size);
+
+                videoContainer.appendChild(videoElement);
+                videoContainer.appendChild(videoInfo);
+                videosContainer.appendChild(videoContainer);
+            });
+        }
+
+        fetchVideos();
+    </script>
+</body>
+</html>
